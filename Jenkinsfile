@@ -22,10 +22,9 @@ pipeline {
                 '''
             }
         }
-        stage('deploy on tomcat') {
+        stage('deploy') {
             steps {
-                echo "Deploying"
-                jenkins ALL=(ALL) NOPASSWD: /bin/cp -r /var/lib/jenkins/workspace/demo/target/studentapp-2.2-SNAPSHOT.war /root/apache-tomcat-8.5.99/webapps/
+                echo "Deploying on tomcat "
                 sh 'cp -r /var/lib/jenkins/workspace/demo/target/studentapp-2.2-SNAPSHOT.war /root/apache-tomcat-8.5.99/webapps/'
             }
         }
