@@ -1,31 +1,46 @@
 pipeline {
     agent any
+
     stages {
-        stage('git pull') { 
+        stage('Git Pull') { 
             steps {
                 git 'https://github.com/jayash-k/jenkins-repo.git'
             }
         }
-        stage('mvn build') { 
+        stage('Maven Build') { 
             steps {
-                sh 'mvn clean package'
+                script {
+                    if (isUnix()) {
+                        sh 'mvn clean package'
+                    } else {
+                        bat 'mvn clean package'
+                    }
+                }
             }
         }
-        stage('sonar test') { 
+        stage('SonarQube Analysis') { 
             steps {
                 echo "Testing with SonarQube"
-                sh '''
-                    mvn clean verify sonar:sonar \
-                    -Dsonar.projectKey=mykey \
-                    -Dsonar.host.url=http://51.20.120.115:9000 \
-                    -Dsonar.login=sqp_9cd4952029d9169ad64e6acf30bdb038072154af
-                '''
+                withSonarQubeEnv('SonarQube') {
+                    script {
+                        sh '''
+                        mvn clean verify sonar:sonar \
+                          -Dsonar.projectKey=myjob \
+                          -Dsonar.host.url=http://98.81.150.14:9000 \
+                          -Dsonar.login=sqp_ff658443f61359a1983910b25691bed7950f8aa6
+                        '''
+                    }
+                }
             }
         }
-        stage('deploy on server') {
+        stage('Deploy on Server') {
             steps {
-                echo "Deploying on tomcat "
-                sh 'cp -r /var/lib/jenkins/workspace/demo/target/studentapp-2.2-SNAPSHOT.war /opt/apache-tomcat-8.5.99/webapps/'
+                echo "Deploying on Tomcat"
+                script {
+                    sh '''
+                    cp -r /var/lib/jenkins/workspace/demo/target/studentapp-2.2-SNAPSHOT.war /opt/apache-tomcat-9.0.97/webapps/
+                    '''
+                }
             }
         }
     }
