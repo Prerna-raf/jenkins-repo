@@ -25,9 +25,9 @@ pipeline {
                     script {
                         sh '''
                         mvn clean verify sonar:sonar \
-                          -Dsonar.projectKey=myjob \
-                          -Dsonar.host.url=http://98.81.150.14:9000 \
-                          -Dsonar.login=sqp_ff658443f61359a1983910b25691bed7950f8aa6
+  -Dsonar.projectKey=myproject \
+  -Dsonar.host.url=http://54.198.173.47:9000 \
+  -Dsonar.login=sqp_f510600c65ce626c2d67769d67a050ca44d6bc28
                         '''
                     }
                 }
