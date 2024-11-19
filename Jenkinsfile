@@ -15,12 +15,14 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo "Testing with SonarQube"
-                sh '''
-                mvn clean verify sonar:sonar \
-                  -Dsonar.projectKey=myproject \
-                  -Dsonar.host.url=http://54.198.173.47:9000 \
-                  -Dsonar.login=sqp_f510600c65ce626c2d67769d67a050ca44d6bc28
-                '''
+                withSonarQubeEnv('SonarQube') {  // Ensure 'SonarQube' matches the name in your Jenkins global configuration
+                    sh '''
+                    mvn clean verify sonar:sonar \
+                      -Dsonar.projectKey=myjob \
+                      -Dsonar.host.url=http://44.222.225.209:9000 \
+                      -Dsonar.login=${SONARQUBE_TOKEN}
+                    '''
+                }
             }
         }
         stage('Build Docker Image') {
@@ -49,5 +51,9 @@ pipeline {
                 '''
             }
         }
+    }
+
+    environment {
+        SONARQUBE_TOKEN = credentials('sonarqube-token') // Ensure you have stored your SonarQube token in Jenkins credentials
     }
 }
