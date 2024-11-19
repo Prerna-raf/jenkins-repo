@@ -19,22 +19,22 @@ pipeline {
                 mvn clean verify sonar:sonar \
                   -Dsonar.projectKey=myproject \
                   -Dsonar.host.url=http://54.87.37.180:9000 \
-                  -Dsonar.login=sqp_686d2d2ef2b659c52cd453ba8f94ce649d98e0e8
+                  -Dsonar.login=sqp_324cbb78c2f55e24ac966b69c126158e7d06e03e
                 '''
             }
         }
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker Image"
-                sh 'docker build -t jayash1845/myproject:latest .'
+                sh 'sudo docker build -t jayash1845/myproject:latest .'
             }
         }
         stage('Push Docker Image') {
             steps {
                 echo "Pushing Docker Image to Registry"
                 sh '''
-                docker login -u jayash1845 -p Kira@1845
-                docker push jayash1845/myproject:latest
+                sudo docker login -u jayash1845 -p Kira@1845
+                sudo docker push jayash1845/myproject:latest
                 '''
             }
         }
@@ -42,10 +42,10 @@ pipeline {
             steps {
                 echo "Deploying Docker Container"
                 sh '''
-                docker pull jayash1845/myproject:latest
-                docker stop myproject || true
-                docker rm myproject || true
-                docker run -d --name myproject -p 8081:8081 jayash1845/myproject:latest
+                sudo docker pull jayash1845/myproject:latest
+                sudo docker stop myproject || true
+                sudo docker rm myproject || true
+                sudo docker run -d --name myproject -p 8081:8081 jayash1845/myproject:latest
                 '''
             }
         }
