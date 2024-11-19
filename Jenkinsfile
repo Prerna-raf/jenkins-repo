@@ -31,14 +31,54 @@ pipeline {
                 }
             }
         }
-        stage('Deploy on Server') {
+        stage('Build Docker Image') {
             steps {
-                echo "Deploying on Tomcat"
+                echo "Building Docker Image"
                 script {
                     if (isUnix()) {
-                        sh 'cp -r /var/lib/jenkins/workspace/myjob/target/studentapp-2.2-SNAPSHOT.war /opt/apache-tomcat-9.0.97/webapps/'
+                        sh 'docker build -t jayash1845/myproject:latest .'
                     } else {
-                        bat 'copy /var/lib/jenkins/workspace/myjob/target/studentapp-2.2-SNAPSHOT.war C:\\opt\\apache-tomcat-9.0.97\\webapps\\'
+                        bat 'docker build -t jayash1845/myproject:latest .'
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                echo "Pushing Docker Image to Registry"
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                        docker push jayash1845/myproject:latest
+                        '''
+                    } else {
+                        bat '''
+                        docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%
+                        docker push jayash1845/myproject:latest
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Deploy Docker Container') {
+            steps {
+                echo "Deploying Docker Container"
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        docker pull jayash1845/myproject:latest
+                        docker stop myproject || true
+                        docker rm myproject || true
+                        docker run -d --name myproject -p 8081:8081 jayash1845/myproject:latest
+                        '''
+                    } else {
+                        bat '''
+                        docker pull jayash1845/myproject:latest
+                        docker stop myproject || true
+                        docker rm myproject || true
+                        docker run -d --name myproject -p 8081:8081 jayash1845/myproject:latest
+                        '''
                     }
                 }
             }
