@@ -26,7 +26,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker Image"
-                sh 'docker build -t jayash1845/myproject:latest .'
+                sh 'cd /var/lib/jenkins/workspace/myjob && docker build -t jayash1845/myproject:latest .'
             }
         }
         stage('Push Docker Image') {
