@@ -13,13 +13,7 @@ ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 
 # Copy your WAR file to the Tomcat webapps directory
-COPY student.war $CATALINA_HOME/webapps/
-
-# Copy the MySQL connector JAR to the Tomcat lib directory
-COPY mysql-connector.jar $CATALINA_HOME/lib/
-
-# Add your context.xml
-COPY context.xml $CATALINA_HOME/conf/context.xml
+COPY /var/lib/jenkins/workspace/myjob/target/*.war $CATALINA_HOME/webapps
 
 # Modify Tomcat's server.xml to listen on port 8081 instead of 8080
 RUN sed -i 's/port="8080"/port="8081"/g' $CATALINA_HOME/conf/server.xml
