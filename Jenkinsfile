@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Git Pull') {
             steps {
-                git 'https://github.com/jayash-k/jenkins-repo'
+                git 'https://github.com/jayash-k/jenkins-repo.git'
             }
         }
         stage('Maven Build') {
