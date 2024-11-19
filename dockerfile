@@ -13,7 +13,7 @@ ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 
 # Copy your WAR file to the Tomcat webapps directory
-COPY /root/var/lib/jenkins/workspace/myjob/target/studentapp-2.2-SNAPSHOT.war $CATALINA_HOME/webapps
+COPY /root/var/lib/jenkins/workspace/myjob/target/studentapp-2.2-SNAPSHOT.war $CATALINA_HOME/webapps/
 
 # Modify Tomcat's server.xml to listen on port 8081 instead of 8080
 RUN sed -i 's/port="8080"/port="8081"/g' $CATALINA_HOME/conf/server.xml
