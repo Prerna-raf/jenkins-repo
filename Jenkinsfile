@@ -15,14 +15,12 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo "Testing with SonarQube"
-                withSonarQubeEnv('SonarQube') {  // Ensure 'SonarQube' matches the name in your Jenkins global configuration
-                    sh '''
-                    mvn clean verify sonar:sonar \
-                      -Dsonar.projectKey=myproject \
-                      -Dsonar.host.url=http://54.87.37.180:9000 \
-                      -Dsonar.login=sqp_686d2d2ef2b659c52cd453ba8f94ce649d98e0e8
-                    '''
-                }
+                sh '''
+                mvn clean verify sonar:sonar \
+                  -Dsonar.projectKey=myproject \
+                  -Dsonar.host.url=http://54.87.37.180:9000 \
+                  -Dsonar.login=sqp_686d2d2ef2b659c52cd453ba8f94ce649d98e0e8
+                '''
             }
         }
         stage('Build Docker Image') {
@@ -35,7 +33,7 @@ pipeline {
             steps {
                 echo "Pushing Docker Image to Registry"
                 sh '''
-                docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+                docker login -u jayash1845 -p Kira@1845
                 docker push jayash1845/myproject:latest
                 '''
             }
