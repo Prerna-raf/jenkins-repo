@@ -18,9 +18,9 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {  // Ensure 'SonarQube' matches the name in your Jenkins global configuration
                     sh '''
                     mvn clean verify sonar:sonar \
-                      -Dsonar.projectKey=myjob \
-                      -Dsonar.host.url=http://44.222.225.209:9000 \
-                      -Dsonar.login=${SONARQUBE_TOKEN}
+                      -Dsonar.projectKey=myproject \
+                      -Dsonar.host.url=http://54.87.37.180:9000 \
+                      -Dsonar.login=sqp_55806c59b323d4d5121669cb2bd19dedef75c251
                     '''
                 }
             }
@@ -51,9 +51,5 @@ pipeline {
                 '''
             }
         }
-    }
-
-    environment {
-        SONARQUBE_TOKEN = credentials('sonarqube-token') // Ensure you have stored your SonarQube token in Jenkins credentials
     }
 }
