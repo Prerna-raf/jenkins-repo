@@ -17,9 +17,9 @@ pipeline {
                 echo "Testing with SonarQube"
                 sh '''
                 mvn clean verify sonar:sonar \
-                  -Dsonar.projectKey=myproject \
-                  -Dsonar.host.url=http://54.87.37.180:9000 \
-                  -Dsonar.login=sqp_324cbb78c2f55e24ac966b69c126158e7d06e03e
+  -Dsonar.projectKey=myproject \
+  -Dsonar.host.url=http://13.53.135.45:9000 \
+  -Dsonar.login=sqp_9290e181d583de31e67a254e8e1842925cf9529f
                 '''
             }
         }
